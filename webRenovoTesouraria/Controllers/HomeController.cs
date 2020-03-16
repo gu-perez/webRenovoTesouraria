@@ -226,7 +226,7 @@ namespace webRenovoTesouraria.Controllers
             Document relatorio = new Document();
             Section section = relatorio.AddSection();
 
-            MigraDoc.DocumentObjectModel.Shapes.Image img = section.Headers.Primary.AddImage(@"C:\Users\gperez\source\repos\RenovoTesouraria\RenovoTesouraria\Content\gustavo2.png");
+            MigraDoc.DocumentObjectModel.Shapes.Image img = section.Headers.Primary.AddImage(@"Content\img\gustavo2.png");
             img.Height = "15cm";
             img.LockAspectRatio = true;
             img.RelativeVertical = MigraDoc.DocumentObjectModel.Shapes.RelativeVertical.Page;
