@@ -1,0 +1,78 @@
+﻿@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Web Tesouraria</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        form.formularioInicio {
+            width: 100%;
+            max-width: 420px;
+            padding: 15px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <form class="formularioInicio" asp-action="Index" method="post">
+
+        <div class="text-center mb-4">
+            <img class="mb-4" src="~/img/icon.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Tesouraria</h1>
+            <p>Para iniciar, preencha o nome completo de quem fará a conferência dos valores.</p>
+        </div>
+
+        @if (ViewBag.MensagemErro != null)
+        {
+            <p class="text-danger">
+                @Html.Raw(ViewBag.MensagemErro)
+            </p>
+        }
+
+
+        <div class="form-group">
+            <input type="text" name="txNome1" id="txNome1" class="form-control text-uppercase" placeholder="Informe o Nome Completo" required>
+            @*<label for="txNome1">1 - Conferido por:</label>*@
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="txNome2" id="txNome2" class="form-control text-uppercase" placeholder="Informe o Nome Completo" required>
+            @*<label for="txNome2">2 - Conferido por:</label>*@
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-lg btn-success btn-block" type="submit">DEPOIS DE PREENCHER, CLIQUE AQUI</button>
+        </div>
+
+        <p class="mt-5 mb-3 text-muted text-center">&copy; @System.DateTime.Now.Year</p>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+</body>
+</html>

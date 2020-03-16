@@ -1,0 +1,578 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Web Tesouraria</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="container">
+        <div class="py-4 text-center">
+            <img class="mb-4" src="~/img/icon.png" alt="" width="72" height="72">
+            <h2>Tesouraria</h2>
+            <p class="lead">Preencha o formulário abaixo e clique em "OK". Atenção para preencher todos os campos corretamente.</p>
+        </div>
+
+        <div class="alert alert-danger fade show" role="alert">
+            <div class="validacao-erro"></div>
+        </div>
+
+        <div class="row">
+            <h4 class="mb-3">Nova Entrada</h4>
+            <div class="col-md-12 order-md-1 border rounded-lg">
+                <form>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th width="35%">Nome Completo</th>
+                                <th>Diz.</th>
+                                <th>Ofer.</th>
+                                <th>Miss.</th>
+                                <th>Ref.</th>
+                                <th width="15%">Tipo</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="anonimo" />
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control text-uppercase" id="nome" placeholder="" value="" required />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="dizimo" placeholder="" value="" data-mask="#.##0,00" data-mask-reverse="true" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="oferta" placeholder="" value="" data-mask="#.##0,00" data-mask-reverse="true" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="missoes" placeholder="" value="" data-mask="#.##0,00" data-mask-reverse="true" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="reforma" placeholder="" value="" data-mask="#.##0,00" data-mask-reverse="true" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" id="tipoEntrada" asp-items="@ViewBag.cboTipoEntrada" required>
+                                            <option value="">Selecione...</option>
+                                            <option value="0">--Misturado--</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success btn-sm btn-block btn-fake-submit" type="button">OK</button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal-entrada-tipo-dinheiro" tabindex="-1" role="dialog" aria-labelledby="TituloModal" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="TituloModalCentralizado">Entrada de Dinheiro diverso</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Nome: <span class="nome-tipo-entrada text-uppercase font-weight-bold"></span></p>
+                                                    <p><span class="total-informado font-italic text-muted"></span></p>
+                                                    <hr />
+                                                    <div class="container">
+                                                        @foreach (var item in ViewBag.TiposEntrada)
+                                                        {
+                                                            <div class="form-group row">
+                                                                <label for="tipo_@item.ID" class="col-sm-5 col-form-label">@item.Nome</label>
+                                                                <div class="col-sm-5">
+                                                                    <input type="text" class="form-control" id="tipo_@item.ID" value="" data-mask="#.##0,00" data-mask-reverse="true" />
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-success btn-cadastrar">Cadastrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+        <div class="row py-4">
+            <div class="col-md-12 order-md-1">
+                <h4 class="mb-3">Entradas Cadastradas</h4>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Nome Completo</th>
+                            <th>Diz.</th>
+                            <th>Ofer.</th>
+                            <th>Miss.</th>
+                            <th>Ref.</th>
+                            @*<th>Tipo</th>*@
+                        </tr>
+                    </thead>
+                    <tbody class="linhaEntrada"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Detalhes</span>
+                    <small class="text-muted">(por Entrada)</small>
+                </h4>
+                <ul class="list-group mb-3 lista-detalhe-categoria">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Dízimos</h6>
+                            <small class="text-muted">*Somente com nome</small>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Ofertas</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Missões</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Reforma</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <span>Total (R$)</span>
+                        <strong>R$ 0,00</strong>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Detalhes</span>
+                    <small class="text-muted">(por Tipo)</small>
+                </h4>
+                <ul class="list-group mb-3 lista-detalhe-tipo">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Notas</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Moedas</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Cheques</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Cartão Cred.</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Cartão Déb.</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Transf. Bancária</h6>
+                        </div>
+                        <span class="text-muted">R$ 0,00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <span>Total (R$)</span>
+                        <strong>R$ 0,00</strong>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="col-md-4 order-md-3 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Outras Informações</span>
+                </h4>
+                <ul class="list-group mb-3 lista-outras-infs">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Conferido Por</h6>
+                        </div>
+                        <span class="text-muted">@ViewBag.ConferidoPorUm</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Conferido Por</h6>
+                        </div>
+                        <span class="text-muted">@ViewBag.ConferidoPorDois</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">@ViewBag.DiaSemana</h6>
+                            <small class="text-muted">@ViewBag.Periodo</small>
+                        </div>
+                        <span class="text-muted">@System.DateTime.Now.ToString("dd/MM/yyyy")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <a class="btn btn-block btn-sm btn-success text-uppercase" asp-action="Finalizar" target="_blank">Finalizar Entradas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">&copy; @System.DateTime.Now.Year</p>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha256-yE5LLp5HSQ/z+hJeCqkz9hdjNkk1jaiGG0tDCraumnA=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+        //$(document).ready(() => {
+        $(document).ready(function () {
+
+            $('.alert').hide();
+
+            var addLinha = () => {
+
+                var notas = $("#tipo_1").val();
+                var moedas = $("#tipo_2").val();
+                var cheques = $("#tipo_3").val();
+                var debito = $("#tipo_4").val();
+                var credito = $("#tipo_5").val();
+                var transf = $("#tipo_6").val();
+
+                if ($("#tipoEntrada").val() == 0) {
+                    notas = (isNaN(parseFloat($("#tipo_1").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#tipo_1").val().replace('.', '').replace(',', '.'));
+                    moedas = (isNaN(parseFloat($("#tipo_2").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#tipo_2").val().replace('.', '').replace(',', '.'));
+                    cheques = (isNaN(parseFloat($("#tipo_3").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#tipo_3").val().replace('.', '').replace(',', '.'));
+                    debito = (isNaN(parseFloat($("#tipo_4").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#tipo_4").val().replace('.', '').replace(',', '.'));
+                    credito = (isNaN(parseFloat($("#tipo_5").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#tipo_5").val().replace('.', '').replace(',', '.'));
+                    transf = (isNaN(parseFloat($("#tipo_6").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#tipo_6").val().replace('.', '').replace(',', '.'));
+                }
+                else {
+                    notas = (isNaN(parseFloat($("#tipo_1").val()))) ? 0 : parseFloat($("#tipo_1").val());
+                    moedas = (isNaN(parseFloat($("#tipo_2").val()))) ? 0 : parseFloat($("#tipo_2").val());
+                    cheques = (isNaN(parseFloat($("#tipo_3").val()))) ? 0 : parseFloat($("#tipo_3").val());
+                    debito = (isNaN(parseFloat($("#tipo_4").val()))) ? 0 : parseFloat($("#tipo_4").val());
+                    credito = (isNaN(parseFloat($("#tipo_5").val()))) ? 0 : parseFloat($("#tipo_5").val());
+                    transf = (isNaN(parseFloat($("#tipo_6").val()))) ? 0 : parseFloat($("#tipo_6").val());
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/AddEntrada',
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "Nome": $("#nome").val(),
+                        "TipoEntrada": $("#tipoEntrada").val(),
+                        "VlDizimo": (isNaN(parseFloat($("#dizimo").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#dizimo").val().replace('.', '').replace(',', '.')),
+                        "VlOferta": (isNaN(parseFloat($("#oferta").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#oferta").val().replace('.', '').replace(',', '.')),
+                        "VlMissoes": (isNaN(parseFloat($("#missoes").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#missoes").val().replace('.', '').replace(',', '.')),
+                        "VlReforma": (isNaN(parseFloat($("#reforma").val().replace('.', '').replace(',', '.')))) ? 0 : parseFloat($("#reforma").val().replace('.', '').replace(',', '.')),
+                        "VlNotas": notas,
+                        "VlMoedas": moedas,
+                        "VlCheques": cheques,
+                        "VlDebito": debito,
+                        "VlCredito": credito,
+                        "VlTransf": transf
+                    }),
+                    contentType: 'application/json',
+                    success: function (data) {
+
+                        $(".linhaEntrada").html("");
+                        $.each(data.retornoLista, function (x, y) {
+                            ////ADICIONA LINHA
+                            var textoHtml = "<tr>";
+                            //textoHtml += "<td><button class='btn-remove-entrada' onclick=\"javascript:removeLinha('" + y.pessoa.nome + "')\"></button></td>";
+                            textoHtml += "<td><i class='far fa-trash-alt text-danger btn-remove-entrada' data-remove = '" + y.pessoa.nome + "'></i></td>";
+                            textoHtml += "<td><span class='nome'>" + y.pessoa.nome + "</span></td>";
+                            textoHtml += "<td><span class='dizimo'>" + y.dizimo.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "<td><span class='oferta'>" + y.oferta.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "<td><span class='missoes'>" + y.missoes.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "<td><span class='reforma'>" + y.reforma.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "</tr>";
+                            $(".linhaEntrada").append(textoHtml);
+                        });
+
+                        //ATUALIZA TOTAIS POR CATEGORIA
+                        $(".lista-detalhe-categoria").html("");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Dízimo</h6><span class='text-muted'><small class='text-muted'>*Somente com nome</small></span></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalDizimo.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Oferta</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalOferta.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Missões</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalMissoes.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Reforma</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalReforma.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between bg-light'><span>Total (R$)</span><strong>R$ " + data.retornoTotais.vlTotalCategoria.toFixed(2).replace('.', ',') + "</strong></li>");
+
+                        //ATUALIZA TOTAIS POR TIPO
+                        $(".lista-detalhe-tipo").html("");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Notas</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalNotas.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Moedas</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalMoedas.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Cheques</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalCheque.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Débito</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalDebito.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Crédito</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalCredito.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Transf.</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalTransf.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between bg-light'><span>Total (R$)</span><strong>R$ " + data.retornoTotais.vlTotalTipo.toFixed(2).replace('.', ',') + "</strong></li>");
+
+                        //LIMPA OS CAMPOS
+                        if ($("#tipoEntrada").val() == 0) {
+                            $("input[id^='tipo_']").each(function () {
+                                $(this).val("");
+                            });
+                            $('#modal-entrada-tipo-dinheiro').modal('hide');
+                        }
+
+                        $("#nome").val("");
+                        $("#dizimo").val("");
+                        $("#oferta").val("");
+                        $("#missoes").val("");
+                        $("#reforma").val("");
+                        $("#tipoEntrada").val("");
+                        $("#anonimo").prop("checked", false);
+                        $("#nome").removeAttr("disabled");
+                        $("#dizimo").removeAttr("disabled");
+
+                        botaoCarregandoOnOff(".btn-fake-submit", false);
+                        if (data.retornoErro != "") { alert(data.retornoErro); }
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert("Valores incompatíveis ou falha do sistema. Contactar ADM");
+                        botaoCarregandoOnOff(".btn-fake-submit", false);
+                    }
+                });
+            };
+            var removeLinha = (id) => {
+                console.log(id);
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/DelEntrada',
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "Nome": id
+                    }),
+                    contentType: 'application/json',
+                    success: function (data) {
+
+                        $(".linhaEntrada").html("");
+                        $.each(data.retornoLista, function (x, y) {
+                            ////ADICIONA LINHA
+                            var textoHtml = "<tr>";
+                            textoHtml += "<td><i class='far fa-trash-alt text-danger btn-remove-entrada' data-remove = '" + y.pessoa.nome + "'></i></td>";
+                            textoHtml += "<td><span class='nome'>" + y.pessoa.nome + "</span></td>";
+                            textoHtml += "<td><span class='dizimo'>" + y.dizimo.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "<td><span class='oferta'>" + y.oferta.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "<td><span class='missoes'>" + y.missoes.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "<td><span class='reforma'>" + y.reforma.toFixed(2).replace('.', ',') + "</span></td>";
+                            textoHtml += "</tr>";
+                            $(".linhaEntrada").append(textoHtml);
+                        });
+
+                        //ATUALIZA TOTAIS POR CATEGORIA
+                        $(".lista-detalhe-categoria").html("");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Dízimo</h6><span class='text-muted'><small class='text-muted'>*Somente com nome</small></span></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalDizimo.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Oferta</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalOferta.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Missões</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalMissoes.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Reforma</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalReforma.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-categoria").append("<li class='list-group-item d-flex justify-content-between bg-light'><span>Total (R$)</span><strong>R$ " + data.retornoTotais.vlTotalCategoria.toFixed(2).replace('.', ',') + "</strong></li>");
+
+                        //ATUALIZA TOTAIS POR TIPO
+                        $(".lista-detalhe-tipo").html("");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Notas</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalNotas.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Moedas</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalMoedas.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Cheques</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalCheque.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Débito</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalDebito.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Crédito</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalCredito.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between lh-condensed'><div><h6 class='my-0'>Transf.</h6></div><span class='text-muted'>R$ " + data.retornoTotais.vlTotalTransf.toFixed(2).replace('.', ',') + "</span></li>");
+                        $(".lista-detalhe-tipo").append("<li class='list-group-item d-flex justify-content-between bg-light'><span>Total (R$)</span><strong>R$ " + data.retornoTotais.vlTotalTipo.toFixed(2).replace('.', ',') + "</strong></li>");
+
+                        //LIMPA OS CAMPOS
+                        $("#nome").val("");
+                        $("#dizimo").val("");
+                        $("#oferta").val("");
+                        $("#missoes").val("");
+                        $("#reforma").val("");
+                        $("#tipoEntrada").val("");
+                        $("#anonimo").prop("checked", false);
+                        $("#nome").removeAttr("disabled");
+                        $("#dizimo").removeAttr("disabled");
+
+                        botaoCarregandoOnOff(".btn-fake-submit", false);
+                        if (data.retornoErro != "") { alert(data.retornoErro); }
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        botaoCarregandoOnOff(".btn-fake-submit", false);
+                    }
+                });
+            };
+            var totalizador = () => {
+                var dizimo = ($("#dizimo").val() == "" || parseFloat($("#dizimo").val().replace('.', '').replace(',', '.')) <= 0) ? 0 : parseFloat($("#dizimo").val().replace('.', '').replace(',', '.'));
+                var oferta = ($("#oferta").val() == "" || parseFloat($("#oferta").val().replace('.', '').replace(',', '.')) <= 0) ? 0 : parseFloat($("#oferta").val().replace('.', '').replace(',', '.'));
+                var missoes = ($("#missoes").val() == "" || parseFloat($("#missoes").val().replace('.', '').replace(',', '.')) <= 0) ? 0 : parseFloat($("#missoes").val().replace('.', '').replace(',', '.'));
+                var reforma = ($("#reforma").val() == "" || parseFloat($("#reforma").val().replace('.', '').replace(',', '.')) <= 0) ? 0 : parseFloat($("#reforma").val().replace('.', '').replace(',', '.'));
+                return dizimo + oferta + missoes + reforma;
+            };
+            var totalizador_ofertas = () => {
+                var oferta = ($("#oferta").val() == "" || parseFloat($("#oferta").val().replace('.', '').replace(',', '.')) <= 0) ? 0 : parseFloat($("#oferta").val().replace('.', '').replace(',', '.'));
+                var missoes = ($("#missoes").val() == "" || parseFloat($("#missoes").val().replace('.', '').replace(',', '.')) <= 0) ? 0 : parseFloat($("#missoes").val().replace('.', '').replace(',', '.'));
+                var reforma = ($("#reforma").val() == "" || parseFloat($("#reforma").val().replace('.', '').replace(',', '.')) <= 0) ? 0 : parseFloat($("#reforma").val().replace('.', '').replace(',', '.'));
+                return oferta + missoes + reforma;
+            };
+            var validaFormulario = () => {
+                var textoValida = "";
+
+                if ($("#nome").val() == "") { textoValida += "<p>O Nome precisa estar preenchido corretamente.</p>" }
+                if ($("#tipoEntrada").val() == "") { textoValida += "<p>O Tipo de Entrada precisa ser definido.</p>" }
+
+                if (totalizador == 0) { textoValida += "<p>Você precisa inserir algum valor.</p>" }
+
+                if ($("#dizimo").val() > 0 && $('#dizimo').val().indexOf(',') <= -1) { textoValida += "<p>Os valores de dízimo precisam ser preenchidos com centavos (formato 000,00).</p>" }
+                if ($("#oferta").val() > 0 && $('#oferta').val().indexOf(',') <= -1) { textoValida += "<p>Os valores de oferta precisam ser preenchidos com centavos (formato 000,00).</p>" }
+                if ($("#missoes").val() > 0 && $('#missoes').val().indexOf(',') <= -1) { textoValida += "<p>Os valores de missões precisam ser preenchidos com centavos (formato 000,00).</p>" }
+                if ($("#reforma").val() > 0 && $('#reforma').val().indexOf(',') <= -1) { textoValida += "<p>Os valores de reforma precisam ser preenchidos com centavos (formato 000,00).</p>" }
+
+                if (textoValida != "") {
+                    $('.alert').show();
+                    $(".validacao-erro p").remove();
+                    $(".validacao-erro").append(textoValida);
+                    return false;
+                }
+                else {
+                    $('.alert').hide();
+                    $(".validacao-erro p").remove();
+                    return true;
+                }
+            };
+            var botaoCarregandoOnOff = (botao, status) => {
+                if (status) {
+                    $(botao).text("");
+                    $(botao).attr("disabled", true);
+                    $(botao).append("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>");
+                }
+                else {
+                    $(botao).remove("span");
+                    $(botao).removeAttr("disabled");
+                    $(botao).text("OK");
+                }
+            };
+
+            $(".btn-cadastrar").on("click", function () { addLinha(); });
+            $(".btn-fake-submit").on("click", () => {
+
+                if (validaFormulario()) {
+
+                    //$(".btn-fake-submit").append("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>");
+                    botaoCarregandoOnOff(".btn-fake-submit", true);
+
+                    if ($("#tipoEntrada").val() != 0) {
+                        //TODO: ADICIONA AS ENTRADAS POR CATEGORIA (DIZIMO/OFERTA)
+                        addLinha();
+                    }
+                    else {
+                        if ($("#tipoEntrada").val() == 0) {
+                            $(".nome-tipo-entrada").text($("#nome").val());
+                            $(".total-informado").text("Total: R$ " + parseFloat(totalizador()).toFixed(2) + " (R$ " + $("#dizimo").val() + " [dizimo] / R$ " + parseFloat(totalizador_ofertas()).toFixed(2) + " [ofertas])");
+                            $('#modal-entrada-tipo-dinheiro').modal('show');
+                        }
+                        else {
+                            $('.alert').show();
+                            $(".validacao-erro p").remove();
+                            $(".validacao-erro").append("<p>Atenção para preencher os campos corretamente.</p>");
+                        }
+                    }
+                }
+
+            });
+
+            $('.linhaEntrada').on('click', '.btn-remove-entrada', function () { removeLinha($(this).attr("data-remove")); });
+
+            $("#tipoEntrada").on("change", () => {
+                var selected = $("#tipoEntrada").val();
+                $("input[id^='tipo_']").each(function () {
+                    $(this).val("");
+                });
+
+                if (selected > 0) {
+                    document.getElementById('tipo_' + selected).value = parseFloat(totalizador()).toFixed(2);
+                }
+            });
+            $("#anonimo").on("change", function () {
+                if ($(this).is(":checked") == true) {
+                    $("#nome").prop("disabled", true);
+                    $("#nome").val("ANÔNIMO");
+
+                    $("#dizimo").prop("disabled", true);
+                    $("#dizimo").val("");
+                }
+                else {
+                    $("#nome").removeAttr("disabled");
+                    $("#dizimo").removeAttr("disabled");
+                    $("#nome").val("");
+                }
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
