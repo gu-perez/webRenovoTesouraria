@@ -123,6 +123,11 @@
 
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="7">
+                                    <textarea class="form-control" id="obs" placeholder="Se necessário, escreva aqui uma Observação" value="" rows="3"></textarea>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </form>
@@ -332,7 +337,8 @@
                         "VlCheques": cheques,
                         "VlDebito": debito,
                         "VlCredito": credito,
-                        "VlTransf": transf
+                        "VlTransf": transf,
+                        "Observacao": $("#obs").val(),
                     }),
                     contentType: 'application/json',
                     success: function (data) {
@@ -384,6 +390,7 @@
                         $("#missoes").val("");
                         $("#reforma").val("");
                         $("#tipoEntrada").val("");
+                        $("#obs").val("");
                         $("#anonimo").prop("checked", false);
                         $("#nome").removeAttr("disabled");
                         $("#dizimo").removeAttr("disabled");
@@ -450,6 +457,7 @@
                         $("#missoes").val("");
                         $("#reforma").val("");
                         $("#tipoEntrada").val("");
+                        $("#obs").val("");
                         $("#anonimo").prop("checked", false);
                         $("#nome").removeAttr("disabled");
                         $("#dizimo").removeAttr("disabled");

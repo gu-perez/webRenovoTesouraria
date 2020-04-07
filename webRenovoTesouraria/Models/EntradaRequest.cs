@@ -2,6 +2,7 @@
 {
     public string Nome { get; set; }
     public string TipoEntrada { get; set; }
+    public string Observacao { get; set; }
 
     public decimal VlDizimo { get; set; }
     public decimal VlOferta { get; set; }

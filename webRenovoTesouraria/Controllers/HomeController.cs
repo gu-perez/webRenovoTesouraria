@@ -101,18 +101,18 @@ namespace webRenovoTesouraria.Controllers
                 }
 
                 //CATEGORIA
-                if (entradaRequest.VlDizimo > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 1, entradaRequest.VlDizimo);
-                if (entradaRequest.VlOferta > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 2, entradaRequest.VlOferta);
-                if (entradaRequest.VlMissoes > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 3, entradaRequest.VlMissoes);
-                if (entradaRequest.VlReforma > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 4, entradaRequest.VlReforma);
+                if (entradaRequest.VlDizimo > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 1, entradaRequest.VlDizimo, entradaRequest.Observacao);
+                if (entradaRequest.VlOferta > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 2, entradaRequest.VlOferta, entradaRequest.Observacao);
+                if (entradaRequest.VlMissoes > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 3, entradaRequest.VlMissoes, entradaRequest.Observacao);
+                if (entradaRequest.VlReforma > 0) _unitOfWork.DetalhesCategoria.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 4, entradaRequest.VlReforma, entradaRequest.Observacao);
 
                 //TIPO
-                if (entradaRequest.VlNotas > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 1, entradaRequest.VlNotas);
-                if (entradaRequest.VlMoedas > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 2, entradaRequest.VlMoedas);
-                if (entradaRequest.VlCheques > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 3, entradaRequest.VlCheques);
-                if (entradaRequest.VlDebito > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 4, entradaRequest.VlDebito);
-                if (entradaRequest.VlCredito > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 5, entradaRequest.VlCredito);
-                if (entradaRequest.VlTransf > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 6, entradaRequest.VlTransf);
+                if (entradaRequest.VlNotas > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 1, entradaRequest.VlNotas, entradaRequest.Observacao);
+                if (entradaRequest.VlMoedas > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 2, entradaRequest.VlMoedas, entradaRequest.Observacao);
+                if (entradaRequest.VlCheques > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 3, entradaRequest.VlCheques, entradaRequest.Observacao);
+                if (entradaRequest.VlDebito > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 4, entradaRequest.VlDebito, entradaRequest.Observacao);
+                if (entradaRequest.VlCredito > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 5, entradaRequest.VlCredito, entradaRequest.Observacao);
+                if (entradaRequest.VlTransf > 0) _unitOfWork.DetalhesTipo.Inserir(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))), idPessoa, 6, entradaRequest.VlTransf, entradaRequest.Observacao);
 
                 var listaDetalhes = _unitOfWork.CabecalhosEntradas.ListaDetalhes(Convert.ToInt32(Util.DataCript.Decriptar(HttpContext.Session.GetString("_hash"))));
 
@@ -226,7 +226,7 @@ namespace webRenovoTesouraria.Controllers
             Document relatorio = new Document();
             Section section = relatorio.AddSection();
 
-            MigraDoc.DocumentObjectModel.Shapes.Image img = section.Headers.Primary.AddImage(@"Content\img\gustavo2.png");
+            MigraDoc.DocumentObjectModel.Shapes.Image img = section.Headers.Primary.AddImage("gustavo2.png");
             img.Height = "15cm";
             img.LockAspectRatio = true;
             img.RelativeVertical = MigraDoc.DocumentObjectModel.Shapes.RelativeVertical.Page;
